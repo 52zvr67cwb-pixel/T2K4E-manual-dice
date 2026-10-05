@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twilight: 2000 Character Worksheet</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --panel-bg: #2a2a2a;
+            --accent-color: #8b2500; /* Rust/Military Red */
+            --text-color: #e0e0e0;
+            --text-light: #ffffff;
+            --border-color: #444;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: var(--text-light);
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .toggle-box {
+            background-color: #333;
+            border: 1px dashed var(--accent-color);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .toggle-box label {
+            font-weight: bold;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        .toggle-box input[type="checkbox"] {
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section-title {
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .stat-card {
+            background: #222;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 3px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stat-card.active-stat {
+            border-left-color: var(--accent-color);
+        }
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+        button {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+            -webkit-appearance: none; /* Safari fix */
+        }
+        button:active {
+            background-color: #b33600;
+        }
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .log-box {
+            background: #111;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 4px;
+            min-height: 80px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>T2K 4E Character Builder</h1>
+
+    <!-- MANUAL DICE TOGGLE BOX -->
+    <div class="toggle-box">
+        <label for="manualDiceMode">
+            <input type="checkbox" id="manualDiceMode">
+            <span>🎲 Roll Physical Dice Manually</span>
+        </label>
+    </div>
+
+    <!-- BIOGRAPHY -->
+    <div class="section">
+        <div class="section-title">Character Info</div>
+        <div class="grid-2" style="margin-bottom: 10px;">
+            <div>
+                <label style="font-size:0.8rem;">Name</label>
+                <input type="text" id="charName" value="Grunt">
+            </div>
+            <div>
+                <label style="font-size:0.8rem;">Nationality</label>
+                <select id="charNation">
+                    <option value="American">American</option>
+                    <option value="Local (Poland)">Local (Poland)</option>
+                    <option value="Soviet">Soviet</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="stat-card"><span>Age:</span> <span class="stat-value" id="valAge">18</span></div>
+            <div class="stat-card"><span>CUF:</span> <span class="stat-value" id="valCUF">D</span></div>
+        </div>
+    </div>
+
+    <!-- CORE ATTRIBUTES -->
+    <div class="section">
+        <div class="section-title">Attributes (A to D)</div>
+        <div class="grid-2">
+            <div class="stat-card active-stat"><span>Strength (STR):</span> <span class="stat-value" id="valSTR">C</span></div>
+            <div class="stat-card active-stat"><span>Agility (AGL):</span> <span class="stat-value" id="valAGL">C</span></div>
+            <div class="stat-card active-stat"><span>Wits (WIT):</span> <span class="stat-value" id="valWIT">C</span></div>
+            <div class="stat-card active-stat"><span>Empathy (EMP):</span> <span class="stat-value" id="valEMP">C</span></div>
+        </div>
+        <button id="btnAttributes" onclick="generateAttributes()">Roll Attribute Growth</button>
+    </div>
+
+    <!-- LIFEPATH STEPS -->
+    <div class="section">
+        <div class="section-title">Lifepath Terms</div>
+        <div class="stat-card" style="margin-bottom: 10px;">
+            <span>Completed Terms:</span> <span class="stat-value" id="valTerms">0</span>
+        </div>
+        <button id="btnTerm" onclick="rollLifepathTerm()">Roll Next Career Term Event</button>
+    </div>
+
+    <!-- ACTION LOG -->
+    <div class="section" style="border-bottom: none; margin-bottom: 0;">
+        <div class="section-title">Activity Log</div>
+        <div class="log-box" id="logBox">Character creation initialized. Ready to roll.</div>
+    </div>
+</div>
+
+<script>
+    // Universal Dice Roller Engine featuring Manual Intercept
+    function rollDie(sides, contextName = "Event") {
+        const isManual = document.getElementById('manualDiceMode').checked;
+
+        if (isManual) {
+            let valid = false;
+            let playerRoll = null;
+
+            while (!valid) {
+                // native prompt works seamlessly on iOS Safari modal popups
+                let input = prompt(`[MANUAL DICE REQUIRED]\nRoll a physical d${sides} for:\n"${contextName}"\nEnter result (1 to ${sides}):`);
+                
+                // Fall back to automatic generation if they leave it blank or hit cancel
+                if (input === null || input.trim() === "") {
+                    logAction(`[System] No input entered. Auto-rolled for ${contextName}.`);
+                    break;
+                }
+
+                playerRoll = parseInt(input, 10);
+                if (!isNaN(playerRoll) && playerRoll >= 1 && playerRoll <= sides) {
+                    valid = true;
+                } else {
+                    alert(`Invalid entry! A d${sides} can only yield a value between 1 and ${sides}.`);
+                }
+            }
+
+            if (valid) {
+                logAction(`[Manual d${sides}] You entered: ${playerRoll} for ${contextName}`);
+                return playerRoll;
+            }
+        }
+
+        // Automatic Digital Roll Fallback Engine
+        const autoRoll = Math.floor(Math.random() * sides) + 1;
+        logAction(`[Auto d${sides}] Rolled: ${autoRoll} for ${contextName}`);
+        return autoRoll;
+    }
+
+    // Helper text logger function
+    function logAction(msg) {
+        const logBox = document.getElementById('logBox');
+        logBox.innerHTML += "<br>" + msg;
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    // T2K 4E Step: Attributes Roll Strategy (2d3 setup)
+    function generateAttributes() {
+        logAction("--- Rolling Attribute Increases ---");
+        // T2K 4E uses 2d3 (or 2d6 halved rounded up) to determine baseline upgrades
+        const die1 = Math.ceil(rollDie(6, "Attribute Allocator Die 1") / 2);
+        const die2 = Math.ceil(rollDie(6, "Attribute Allocator Die 2") / 2);
+        const totalUpgrades = die1 + die2;
+
+        logAction(`Total attribute score step upgrades earned: <strong>${totalUpgrades}</strong>`);
+        alert(`You earned ${totalUpgrades} attribute step increases! Update your character worksheet accordingly.`);
+        
+        // Visual indicator that allocation step is triggered
+        document.getElementById('btnAttributes').innerText = "Rerolled Upgrades";
+    }
+
+    // Lifepath Term Intercept Sequence Tracker
+    let totalTerms = 0;
+    let baselineAge = 18;
+
+    function rollLifepathTerm() {
+        totalTerms++;
+        baselineAge += 4; // Each career lifepath cycle spans 4 years in-universe
+
