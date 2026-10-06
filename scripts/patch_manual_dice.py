@@ -74,5 +74,10 @@ text = text.replace('const listRoll = d6();', "const listRoll = d6('Officer Spec
 text = text.replace('const specialtyRoll = d6();', "const specialtyRoll = d6('Specialty Roll');")
 text = text.replace('const rads = d6();', "const rads = d6('Permanent Radiation');")
 
+vite = Path('vite.config.js')
+vite_text = vite.read_text(encoding='utf-8')
+vite_text = vite_text.replace("base: '/t2k4e-creator/'", "base: '/T2K4E-manual-dice/'")
+vite.write_text(vite_text, encoding='utf-8')
+
 app.write_text(text, encoding='utf-8')
 print('Patched physical-dice mode successfully.')
