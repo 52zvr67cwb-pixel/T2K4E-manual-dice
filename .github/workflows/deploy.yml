@@ -1,0 +1,54 @@
+name: Build and Deploy Manual Dice Creator
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v6
+
+      - name: Get original Twilight 2000 creator
+        run: git clone --depth 1 https://github.com/TalonK/t2k4e-creator.git creator
+
+      - name: Apply physical dice modification
+        run: |
+          cp scripts/patch_manual_dice.py creator/scripts_patch_manual_dice.py
+          cd creator
+          python3 scripts_patch_manual_dice.py
+
+      - name: Install dependencies
+        working-directory: creator
+        run: npm ci
+
+      - name: Build creator
+        working-directory: creator
+        run: npm run build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: creator/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
